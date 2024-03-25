@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+export const buttonsColor: string = "#841584";
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -15,15 +17,26 @@ export const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
     },
+    centeredText: {
+        textAlign: "center",
+    },
+
+    camera: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 1,
+    },
     iconButton: {
         position: "absolute",
         top: 50,
         right: 25,
-        zIndex: 1,
+        zIndex: 2,
     },
-    centeredText: {
-        textAlign: "center",
+
+    pressableTest: {
+        position: "absolute",
+        top: 150,
+        right: 25,
+        zIndex: 3,
+        backgroundColor: buttonsColor,
     },
 });
-
-export const buttonsColor: string = "#841584";
