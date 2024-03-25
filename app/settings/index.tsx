@@ -4,7 +4,6 @@ import { styles } from "../styles";
 import { AppContext } from "../context";
 import { useRouter } from "expo-router";
 import { setItemAsync } from "expo-secure-store";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Settings() {
     const { link, setLink } = useContext(AppContext);

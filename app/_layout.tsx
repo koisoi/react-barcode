@@ -3,7 +3,6 @@ import { useCameraPermission } from "react-native-vision-camera";
 import { AppContext } from "./context";
 import { Slot } from "expo-router";
 import { getItemAsync } from "expo-secure-store";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Root() {
     const { hasPermission, requestPermission } = useCameraPermission();
