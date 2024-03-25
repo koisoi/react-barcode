@@ -56,12 +56,6 @@ export default function App() {
             >
                 <MaterialIcons name="settings" size={30} color="white" />
             </Pressable>
-            <Pressable
-                accessibilityLabel="Разрешить использовать мою камеру"
-                style={styles.pressableTest}
-            >
-                <Text>Проверка</Text>
-            </Pressable>
             <Camera
                 style={styles.camera}
                 device={device}
