@@ -110,12 +110,6 @@ export default function App() {
     const handleCodeScan = Worklets.createRunInJsFn(handleCodeScanTemplate);
 
     const resizeMode = "cover";
-    // const [layout, setLayout] = useState({ width: 0, height: 0 });
-    // const onLayout = useCallback((event: LayoutChangeEvent) => {
-    //     const { width, height } = event.nativeEvent.layout;
-    //     // console.log({event});
-    //     setLayout({ width, height });
-    // }, []);
 
     const { props: cameraProps, highlights } = useBarcodeScanner({
         barcodeTypes: ["ean-13"], // optional
@@ -125,20 +119,7 @@ export default function App() {
         },
         resizeMode,
         disableHighlighting: false,
-        // fps: 5,
-        // regionOfInterest: {
-        //     x: 100,
-        //     y: 100,
-        //     width: 100,
-        //     height: 100,
-        // },
     });
-
-    // const codeScanner = useCodeScanner({
-    //     codeTypes: ["ean-13"],
-    //     onCodeScanned: handleCodeScan,
-    //     // regionOfInterest: { x: 100, y: 100, width: 100, height: 100 },
-    // });
 
     useEffect(() => {
         if (!hasPermission) requestPermission();
@@ -162,8 +143,6 @@ export default function App() {
                 isActive={true}
                 photo={true}
                 {...cameraProps}
-                // codeScanner={codeScanner}
-                // frameProcessor={frameProcessor}
             />
             <CameraHighlights highlights={highlights} color="white" />
             <CameraHighlight
@@ -174,8 +153,6 @@ export default function App() {
                 size={{ width: squareWidth, height: squareWidth }}
                 color="white"
             />
-            {/* <CameraHighlight origin={} color="white" /> */}
-            {/* <VisonCameraCodeScannerExamplePage /> */}
         </View>
     );
 }
