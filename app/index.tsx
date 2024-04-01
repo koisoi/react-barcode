@@ -135,13 +135,12 @@ export default function App() {
                 onPress={() => router.push("/settings")}
                 style={styles.iconButton}
             >
-                <MaterialIcons name="settings" size={30} color="white" />
+                <MaterialIcons name="settings" size={30} color="black" />
             </Pressable>
-            <Camera
+            {/* <Camera
                 style={styles.camera}
                 device={device}
                 isActive={true}
-                photo={true}
                 {...cameraProps}
             />
             <CameraHighlights highlights={highlights} color="white" />
@@ -152,7 +151,7 @@ export default function App() {
                 }}
                 size={{ width: squareWidth, height: squareWidth }}
                 color="white"
-            />
+            /> */}
         </View>
     );
 }

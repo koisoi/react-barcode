@@ -7,7 +7,7 @@ import { setItemAsync } from "expo-secure-store";
 
 export default function Settings() {
     const { link, setLink } = useContext(AppContext);
-    const [input, setInput] = useState<string>(link || "");
+    const [keyInput, setKeyInput] = useState<string>(link || "");
 
     const router = useRouter();
     const storeLink = async (link: string) => {
@@ -16,18 +16,24 @@ export default function Settings() {
 
     return (
         <View style={styles.container}>
-            <Text>Ссылка для отправки кодов:</Text>
+            <Text>Ключ:</Text>
             <TextInput
                 style={styles.input}
-                value={input}
-                onChangeText={setInput}
+                value={keyInput}
+                onChangeText={setKeyInput}
             />
+            {/* <Text>Логин:</Text>
+        <TextInput
+            style={styles.input}
+            value={keyInput}
+            onChangeText={setKeyInput}
+        /> */}
             <Button
                 title="Сохранить"
                 onPress={async () => {
-                    console.log(input);
-                    setLink(input);
-                    await storeLink(input);
+                    console.log(keyInput);
+                    setLink(keyInput);
+                    await storeLink(keyInput);
                     router.back();
                 }}
             />
