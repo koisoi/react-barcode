@@ -2,7 +2,6 @@
     "name": "react-barcode",
     "version": "1.0.0",
     "main": "expo-router/entry",
-    "scheme": "react-barcode",
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",

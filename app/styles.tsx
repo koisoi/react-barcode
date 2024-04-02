@@ -1,7 +1,5 @@
 import { StyleSheet } from "react-native";
 
-export const buttonsColor: string = "#841584";
-
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -31,12 +29,12 @@ export const styles = StyleSheet.create({
         right: 25,
         zIndex: 2,
     },
-
-    pressableTest: {
+    text: {
         position: "absolute",
         top: 150,
         right: 25,
         zIndex: 3,
-        backgroundColor: buttonsColor,
+        color: "white",
+        fontSize: 20,
     },
 });

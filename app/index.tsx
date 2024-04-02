@@ -1,12 +1,20 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Dimensions, PixelRatio, Pressable, View } from "react-native";
+import {
+    Dimensions,
+    PixelRatio,
+    Pressable,
+    View,
+    Text,
+    AppState,
+    ToastAndroid,
+} from "react-native";
 import {
     Camera,
     Frame,
     useCameraDevice,
     useCameraFormat,
 } from "react-native-vision-camera";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { styles } from "./styles";
 import NoCameraError from "./noCameraError";
 import NoCameraPermission from "./noCameraPermission";
@@ -18,11 +26,17 @@ import {
     CameraHighlights,
     useBarcodeScanner,
 } from "@mgcrea/vision-camera-barcode-scanner";
+import { getLoginData } from "../lib";
 
 export default function App() {
-    const { hasPermission, requestPermission, link } = useContext(AppContext);
+    const { hasPermission, requestPermission } = useContext(AppContext);
     const device = useCameraDevice("back");
     const router = useRouter();
+
+    const isFocused = useNavigation().isFocused();
+    const appState = AppState.currentState;
+    const isActive: boolean =
+        isFocused && appState === "active" && typeof device !== "undefined";
 
     const [scanPause, setScanPause] = useState<boolean>(false);
     const prevScan = useRef<Barcode | null>(null);
@@ -51,12 +65,15 @@ export default function App() {
     const squareWidth = (videoWidth - clippedVideoSectionsWidth) * 0.6;
 
     const handleCodeScanTemplate = async (codes: Barcode[], frame: Frame) => {
-        if (scanPause || !link) return;
-        setScanPause(true);
-        if (prevScan.current && codes[0].value === prevScan.current?.value) {
-            setScanPause(false);
+        if (
+            scanPause ||
+            (prevScan.current && codes[0].value === prevScan.current?.value)
+        )
             return;
-        }
+        // console.log(scanPause);
+        const loginData = await getLoginData();
+
+        setScanPause(true);
 
         const [topLeft, topRight, bottomRight, bottomLeft] =
             codes[0].cornerPoints;
@@ -84,27 +101,69 @@ export default function App() {
             bottom < boundingRect.bottom;
 
         if (isBarcodeInsideArea) {
-            // const promise = await fetch(link)
-            prevScan.current = codes[0];
-            console.log(
-                boundingRect.left,
-                boundingRect.top,
-                boundingRect.right,
-                boundingRect.bottom
-            );
-            console.log(left, top, right, bottom);
-            setScanPause(false);
-        } else {
-            console.log("Camera thinks barcode is out of area");
-            console.log(
-                boundingRect.left,
-                boundingRect.top,
-                boundingRect.right,
-                boundingRect.bottom
-            );
-            console.log(left, top, right, bottom);
-            setScanPause(false);
+            if (!loginData?.key || !loginData?.login) {
+                ToastAndroid.show(
+                    `Параметры для отправки кода не были заданы; код не будет отправлен.`,
+                    ToastAndroid.SHORT
+                );
+                return;
+            }
+
+            try {
+                const result = await fetch(
+                    `https://stat.webtrack.biz/storage/remote/barcode/login/${loginData.login}/key/${loginData.key}/`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify([
+                            {
+                                barcode: codes[0].value,
+                                description: codes[0].type,
+                                id: new Date().toString() + loginData.login,
+                            },
+                        ]),
+                    }
+                );
+
+                if (!result.ok) {
+                    throw new Error(
+                        `Запрос вернул статус-код ${result.status}`
+                    );
+                }
+
+                ToastAndroid.show("Код успешно отправлен.", ToastAndroid.SHORT);
+                prevScan.current = codes[0];
+                setScanPause(false);
+            } catch (error) {
+                ToastAndroid.show(
+                    `Произошла ошибка при отправке кода: ${error}.`,
+                    ToastAndroid.SHORT
+                );
+                setScanPause(false);
+            }
         }
+
+        // if (isBarcodeInsideArea) {
+        //     // const promise = await fetch(link)
+        //     prevScan.current = codes[0];
+        //     console.log(
+        //         boundingRect.left,
+        //         boundingRect.top,
+        //         boundingRect.right,
+        //         boundingRect.bottom
+        //     );
+        //     console.log(left, top, right, bottom);
+        //     setScanPause(false);
+        // } else {
+        //     console.log("Camera thinks barcode is out of area");
+        //     console.log(
+        //         boundingRect.left,
+        //         boundingRect.top,
+        //         boundingRect.right,
+        //         boundingRect.bottom
+        //     );
+        //     console.log(left, top, right, bottom);
+        //     setScanPause(false);
+        // }
     };
 
     const handleCodeScan = Worklets.createRunInJsFn(handleCodeScanTemplate);
@@ -135,12 +194,16 @@ export default function App() {
                 onPress={() => router.push("/settings")}
                 style={styles.iconButton}
             >
-                <MaterialIcons name="settings" size={30} color="black" />
+                <MaterialIcons name="settings" size={30} color="white" />
             </Pressable>
-            {/* <Camera
+            {/* <Text style={styles.text}>{prevScan.current?.value}</Text> */}
+            <Camera
                 style={styles.camera}
                 device={device}
-                isActive={true}
+                isActive={isActive}
+                onInitialized={() => {
+                    console.log("initialized");
+                }}
                 {...cameraProps}
             />
             <CameraHighlights highlights={highlights} color="white" />
@@ -151,7 +214,7 @@ export default function App() {
                 }}
                 size={{ width: squareWidth, height: squareWidth }}
                 color="white"
-            /> */}
+            />
         </View>
     );
 }

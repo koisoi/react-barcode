@@ -1,5 +1,5 @@
 import { View, Text, Button, Linking } from "react-native";
-import { buttonsColor, styles } from "./styles";
+import { styles } from "./styles";
 import { useContext } from "react";
 import { AppContext } from "./context";
 
@@ -14,13 +14,11 @@ export default function NoCameraPermission() {
             <Button
                 onPress={() => requestPermission()}
                 title="Разрешить"
-                color={buttonsColor}
                 accessibilityLabel="Разрешить использовать мою камеру"
             />
             <Button
                 onPress={async () => await Linking.openSettings()}
                 title="Открыть настройки приложения"
-                color={buttonsColor}
                 accessibilityLabel="Открыть настройки приложения, чтобы разрешить использовать мою камеру"
             />
         </View>
