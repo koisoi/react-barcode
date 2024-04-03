@@ -7,8 +7,8 @@ export default function NoCameraPermission() {
     const { requestPermission } = useContext(AppContext);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.centeredText}>
+        <View style={styles.blackContainer}>
+            <Text style={styles.text}>
                 Приложению необходимо разрешение на использование камеры.
             </Text>
             <Button

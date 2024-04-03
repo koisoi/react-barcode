@@ -40,10 +40,10 @@ export default function Settings() {
     }, []);
 
     return (
-        <View style={styles.container}>
-            <Text>Ключ:</Text>
+        <View style={styles.blackContainer}>
+            <Text style={styles.text}>Ключ:</Text>
             <TextInput style={styles.input} value={key} onChangeText={setKey} />
-            <Text>Логин:</Text>
+            <Text style={styles.text}>Логин:</Text>
             <TextInput
                 style={styles.input}
                 value={login}

@@ -1,12 +1,12 @@
-import { useCameraPermission } from "react-native-vision-camera";
 import { AppContext } from "./context";
 import { Slot } from "expo-router";
+import { useCameraPermissions } from "expo-camera/next";
 
 export default function Root() {
-    const { hasPermission, requestPermission } = useCameraPermission();
+    const [hasPermission, requestPermission] = useCameraPermissions();
 
     const context = {
-        hasPermission,
+        hasPermission: hasPermission?.granted || false,
         requestPermission,
     };
 

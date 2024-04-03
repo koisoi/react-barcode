@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+const prestyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        // backgroundColor: "#000",
+        color: "white",
         alignItems: "center",
         justifyContent: "center",
-        gap: 10,
+        gap: 20,
     },
     input: {
         width: 250,
@@ -14,13 +15,18 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderRadius: 5,
+        color: "white",
+        borderColor: "white",
     },
     centeredText: {
         textAlign: "center",
     },
-
     camera: {
-        ...StyleSheet.absoluteFillObject,
+        width: "80%",
+        aspectRatio: 1,
+        overflow: "hidden",
+        borderRadius: 10,
+        marginBottom: 40,
         zIndex: 1,
     },
     iconButton: {
@@ -30,11 +36,16 @@ export const styles = StyleSheet.create({
         zIndex: 2,
     },
     text: {
-        position: "absolute",
-        top: 150,
-        right: 25,
-        zIndex: 3,
         color: "white",
         fontSize: 20,
+        textAlign: "center",
+    },
+});
+
+export const styles = StyleSheet.create({
+    ...prestyles,
+    blackContainer: {
+        ...prestyles.container,
+        backgroundColor: "#000",
     },
 });
