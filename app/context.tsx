@@ -1,5 +1,4 @@
-import { PermissionResponse } from "expo-camera";
-import { Dispatch, SetStateAction, createContext } from "react";
+import { createContext } from "react";
 
 export const AppContext = createContext<{
     // link: null | string;
